@@ -1,6 +1,6 @@
 ﻿namespace DI.Model;
 
-internal interface IScope
+public interface IScope
 {
     object Resolve(Type service);
 }

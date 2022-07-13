@@ -1,6 +1,6 @@
 namespace DI.Model;
 
-internal enum Lifetime
+public enum Lifetime
 {
     Transient,
     Scoped,

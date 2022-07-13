@@ -2,7 +2,7 @@
 
 namespace DI.Model;
 
-internal static class ContainerBuilderExtensions
+public static class ContainerBuilderExtensions
 {
     public static IContainerBuilder
         RegisterSingleton(this IContainerBuilder builder, Type service, Type implementation) =>
@@ -44,8 +44,8 @@ internal static class ContainerBuilderExtensions
 
 
     public static IContainerBuilder
-        RegisterSingleton(this IContainerBuilder builder, Type service, object instance) =>
-        RegisterInstance(builder, service, instance);
+        RegisterSingleton<TService>(this IContainerBuilder builder, object instance) =>
+        RegisterInstance(builder, typeof(TService), instance);
 
 
     private static IContainerBuilder RegisterType(this IContainerBuilder builder,
