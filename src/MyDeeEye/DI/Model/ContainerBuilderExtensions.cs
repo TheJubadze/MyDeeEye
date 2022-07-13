@@ -30,20 +30,17 @@ internal static class ContainerBuilderExtensions
         RegisterType(builder, typeof(TService), typeof(TImplementation), Lifetime.Scoped);
 
 
-    public static IContainerBuilder RegisterSingleton(this IContainerBuilder builder,
-        Type service,
-        Func<IScope, object> factory) =>
-        RegisterFactory(builder, service, factory, Lifetime.Singleton);
+    public static IContainerBuilder RegisterSingleton<TService>(this IContainerBuilder builder,
+        Func<IScope, TService> factory) =>
+        RegisterFactory(builder, typeof(TService), s => factory(s), Lifetime.Singleton);
 
-    public static IContainerBuilder RegisterTransient(this IContainerBuilder builder,
-        Type service,
-        Func<IScope, object> factory) =>
-        RegisterFactory(builder, service, factory, Lifetime.Transient);
+    public static IContainerBuilder RegisterTransient<TService>(this IContainerBuilder builder,
+        Func<IScope, TService> factory) =>
+        RegisterFactory(builder, typeof(TService), s => factory(s), Lifetime.Transient);
 
-    public static IContainerBuilder RegisterScoped(this IContainerBuilder builder,
-        Type service,
-        Func<IScope, object> factory) =>
-        RegisterFactory(builder, service, factory, Lifetime.Scoped);
+    public static IContainerBuilder RegisterScoped<TService>(this IContainerBuilder builder,
+        Func<IScope, TService> factory) =>
+        RegisterFactory(builder, typeof(TService), s => factory(s), Lifetime.Scoped);
 
 
     public static IContainerBuilder
