@@ -1,8 +1,10 @@
 ﻿using DI.Model;
 
 IContainerBuilder builder = new ContainerBuilder();
-builder.RegisterSingleton<IService, Service>()
-    .RegisterTransient<IHelper>(s => new Helper())
-    .RegisterSingleton<IAnotherService>(AnotherServiceInstance.Instance);
-    
-    
+var container = builder.RegisterTransient<IService, Service>()
+    .RegisterScoped<Controller, Controller>()
+    .Build();
+
+var scope = container.CreateScope();
+var controller = scope.Resolve(typeof(Controller));
+Console.WriteLine("Success");

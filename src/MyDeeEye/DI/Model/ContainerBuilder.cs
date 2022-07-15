@@ -13,6 +13,6 @@ public class ContainerBuilder : IContainerBuilder
 
     public IContainer Build()
     {
-        throw new NotImplementedException();
+        return new Container(_descriptors);
     }
 }
