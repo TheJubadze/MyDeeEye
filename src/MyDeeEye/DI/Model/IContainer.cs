@@ -1,6 +1,6 @@
 ﻿namespace DI.Model;
 
-public interface IContainer
+public interface IContainer : IDisposable, IAsyncDisposable
 {
     IScope CreateScope();
 }
