@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using System.Reflection;
 using DI.Descriptors;
 
 namespace DI.Model;
@@ -79,9 +78,11 @@ internal class Container : IContainer
     private readonly ImmutableDictionary<Type, ServiceDescriptor> _descriptors;
     private readonly ConcurrentDictionary<Type, Func<IScope, object>> _builtActivators = new();
     private readonly Scope _rootScope;
+    private readonly IActivationBuilder _activationBuilder;
 
-    public Container(IEnumerable<ServiceDescriptor> descriptors)
+    public Container(IEnumerable<ServiceDescriptor> descriptors, IActivationBuilder activationBuilder)
     {
+        _activationBuilder = activationBuilder;
         _descriptors = descriptors.ToImmutableDictionary(x => x.ServiceType);
         _rootScope = new(this);
     }
@@ -124,17 +125,7 @@ internal class Container : IContainer
             return fb.Factory;
         }
 
-        var tb = (TypeBasedServiceDescriptor)descriptor;
-
-        var ctor = tb.ImplementationType.GetConstructors(BindingFlags.Public | BindingFlags.Instance).Single();
-        var args = ctor.GetParameters();
-
-        return scope =>
-        {
-            var argsForCtor = args.Select(arg => CreateInstance(arg.ParameterType, scope)).ToArray();
-
-            return ctor.Invoke(argsForCtor);
-        };
+        return _activationBuilder.BuildActivation(descriptor);
     }
 
     private object CreateInstance(Type service, IScope scope)

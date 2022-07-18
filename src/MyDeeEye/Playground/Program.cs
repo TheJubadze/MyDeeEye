@@ -1,6 +1,6 @@
 ﻿using DI.Model;
 
-IContainerBuilder builder = new ContainerBuilder();
+IContainerBuilder builder = new ContainerBuilder(new LambdaBasedActivationBuilder());
 
 using (var container = builder.RegisterTransient<IService, Service>()
            .RegisterScoped<Controller, Controller>()
