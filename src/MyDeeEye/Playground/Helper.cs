@@ -1,3 +1,5 @@
-﻿class Helper : IHelper
+﻿namespace Playground;
+
+class Helper : IHelper
 {
 }

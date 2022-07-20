@@ -1,3 +1,5 @@
-﻿interface IService
+﻿namespace Playground;
+
+public interface IService
 {
 }

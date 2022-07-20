@@ -1,3 +1,5 @@
-﻿interface IAnotherService
+﻿namespace Playground;
+
+interface IAnotherService
 {
 }

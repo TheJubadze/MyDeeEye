@@ -3,7 +3,7 @@ using DI.Descriptors;
 
 namespace DI.Model;
 
-internal class ReflectionBasedActivationBuilder : ActivationBuilderBase
+public class ReflectionBasedActivationBuilder : ActivationBuilderBase
 {
     protected override Func<IScope, object> BuildActivationInternal(TypeBasedServiceDescriptor tb,
         ConstructorInfo ctor,

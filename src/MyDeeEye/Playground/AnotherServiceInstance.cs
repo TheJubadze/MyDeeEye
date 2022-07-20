@@ -1,4 +1,6 @@
-﻿class AnotherServiceInstance : IAnotherService
+﻿namespace Playground;
+
+class AnotherServiceInstance : IAnotherService
 {
     private AnotherServiceInstance()
     {

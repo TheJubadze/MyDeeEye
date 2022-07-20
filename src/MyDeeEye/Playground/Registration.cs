@@ -1,5 +1,7 @@
 ﻿using DI.Model;
 
+namespace Playground;
+
 class Registration
 {
     public IContainer ConfigureServices()

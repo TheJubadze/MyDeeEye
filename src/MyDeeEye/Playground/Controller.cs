@@ -1,4 +1,6 @@
-﻿class Controller
+﻿namespace Playground;
+
+public class Controller
 {
     private readonly IService _service;
 

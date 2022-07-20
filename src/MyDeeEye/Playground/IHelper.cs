@@ -1,3 +1,5 @@
-﻿interface IHelper
+﻿namespace Playground;
+
+interface IHelper
 {
 }

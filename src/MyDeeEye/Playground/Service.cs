@@ -1,3 +1,5 @@
-﻿class Service : IService
+﻿namespace Playground;
+
+class Service : IService
 {
 }
