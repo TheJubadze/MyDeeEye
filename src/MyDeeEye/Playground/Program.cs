@@ -14,8 +14,8 @@ namespace Playground
 
         public ContainerBenchmark()
         {
-            var reflectionBasedBuilder = new ContainerBuilder(new LambdaBasedActivationBuilder());
-            var lambdaBasedBuilder = new ContainerBuilder(new ReflectionBasedActivationBuilder());
+            var reflectionBasedBuilder = new ContainerBuilder(new ReflectionBasedActivationBuilder());
+            var lambdaBasedBuilder = new ContainerBuilder(new LambdaBasedActivationBuilder());
             InitContainer(reflectionBasedBuilder);
             InitContainer(lambdaBasedBuilder);
             _reflectionBased = reflectionBasedBuilder.Build().CreateScope();
