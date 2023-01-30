@@ -1,16 +1,22 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using Autofac;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using DI.Model;
+using Microsoft.Extensions.DependencyInjection;
 using Playground;
+using ContainerBuilder = DI.Model.ContainerBuilder;
 
 BenchmarkRunner.Run<ContainerBenchmark>();
 
 namespace Playground
 {
+    [MemoryDiagnoser]
     public class ContainerBenchmark
     {
         private readonly IScope _reflectionBased;
         private readonly IScope _lambdaBased;
+        private readonly ILifetimeScope _autofac;
+        private readonly IServiceScope _msDi;
 
         public ContainerBenchmark()
         {
@@ -20,13 +26,33 @@ namespace Playground
             InitContainer(lambdaBasedBuilder);
             _reflectionBased = reflectionBasedBuilder.Build().CreateScope();
             _lambdaBased = lambdaBasedBuilder.Build().CreateScope();
+
+            _autofac = InitAutofac(new Autofac.ContainerBuilder());
+            _msDi = InitMsDi(new ServiceCollection());
         }
 
-        private void InitContainer(ContainerBuilder builder)
+        private static void InitContainer(ContainerBuilder builder)
         {
             builder.RegisterTransient<IService, Service>()
                 .RegisterTransient<Controller, Controller>();
         }
+
+        private static ILifetimeScope InitAutofac(Autofac.ContainerBuilder builder)
+        {
+            builder.RegisterType<Service>().As<IService>();
+            builder.RegisterType<Controller>().AsSelf();
+
+            return builder.Build().BeginLifetimeScope();
+        }
+
+        private static IServiceScope InitMsDi(IServiceCollection collection)
+        {
+            collection.AddTransient<IService, Service>();
+            collection.AddTransient<Controller, Controller>();
+
+            return collection.BuildServiceProvider().CreateScope();
+        }
+
 
         [Benchmark(Baseline = true)]
         public Controller Create() => new Controller(new Service());
@@ -36,6 +62,12 @@ namespace Playground
 
         [Benchmark]
         public Controller Lambda() => (Controller)_lambdaBased.Resolve(typeof(Controller));
+
+        [Benchmark]
+        public Controller Autofac() => _autofac.Resolve<Controller>();
+
+        [Benchmark]
+        public Controller MsDi() => _msDi.ServiceProvider.GetRequiredService<Controller>();
     }
 }
 

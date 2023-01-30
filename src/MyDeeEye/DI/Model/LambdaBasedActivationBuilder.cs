@@ -14,10 +14,10 @@ public class LambdaBasedActivationBuilder : ActivationBuilderBase
         ServiceDescriptor descriptor)
     {
         var scopeParameter = Expression.Parameter(typeof(IScope), "scope");
-        var ctorArgs = args.Select(x =>
-            Expression.Call(scopeParameter, ResolveMethod, Expression.Constant(x.ParameterType)));
-        var @new = Expression.New(ctor, ctorArgs);
-
+        var expArgs = args.Select(x =>
+            Expression.Convert(Expression.Call(scopeParameter, ResolveMethod, Expression.Constant(x.ParameterType)),
+                x.ParameterType));
+        var @new = Expression.New(ctor, expArgs);
         var lambda = Expression.Lambda<Func<IScope, object>>(@new, scopeParameter);
 
         return lambda.Compile();

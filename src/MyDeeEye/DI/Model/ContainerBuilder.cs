@@ -19,6 +19,6 @@ public class ContainerBuilder : IContainerBuilder
 
     public IContainer Build()
     {
-        return new Container(_descriptors, new ReflectionBasedActivationBuilder());
+        return new Container(_descriptors, _builder);
     }
 }
